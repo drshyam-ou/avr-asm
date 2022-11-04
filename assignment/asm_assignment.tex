@@ -1,0 +1,119 @@
+\documentclass[journal,10pt,twocolumn]{article}
+\usepackage{graphicx}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{kvmap}
+\title{\textbf{Assembly assignment}}
+\author{M.Shyamsunder}
+\date{November 2022}
+
+\begin{document}
+\maketitle
+\paragraph{\textit{Problem Statemet}-The figure below shows a muliplexer where S0 and S1 are the select lines,I0 to I3 are the input lines,EN is the enable line,and F(P,Q,R) is the O/P.The objective is to find the boolean expression for output F as function of inputs P,Q,R using K-map and implementing the logic of multiplexer using Arduino uno}
+
+\section*{\normalsize}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\columnwidth]{mux.png}
+\caption{Multiplexer}
+\label{fig:mux}
+\end{figure}
+
+
+\section*{\large Hardware}
+\subsection*{\normalsize Components}
+{
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+Component&Value&Count\\
+\hline
+Arduino&Uno&1\\
+\hline
+LED&Red&1\\
+\hline
+Resistor&220 Ohm&1\\
+\hline
+Jumper Wires&-&as-required\\
+\hline
+\end{tabular}\par
+}
+
+\subsection*{\normalsize Connections}
+\begin{itemize}
+\item Connect LED to pin 13 of Arduino with the 220ohm resistor in series
+\item Connect 5v and ground points from Arduino to extreme ends of bread board
+\item Use D2,D3,D4 pins of Arduino as inputs(P,Q,R points) referred in Fig.\ref{fig:mux}.  and D13 as output(F)
+\end{itemize}
+
+\section*{\large Truth table}
+{
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+$\boldsymbol{P}$&$\boldsymbol{Q}$&$\boldsymbol{R}$&$\boldsymbol{F}$\\
+\hline
+0&0&0&0\\%
+\hline
+0&0&1&1\\%
+\hline
+0&1&0&0\\%
+\hline
+0&1&1&0\\%
+\hline
+1&0&0&0\\%
+\hline
+1&0&1&1\\%
+\hline
+1&1&0&1\\%
+\hline
+1&1&1&1\\%
+\hline
+\end{tabular}\par
+}
+
+\section*{\large Minimization using kmap}
+\begin{kvmap}
+\kvlist{4}{2}{0,1,0,0,0,1,1,1}{Q,R,P}
+\bundle[color=red]{1}{0}{1}{1}
+\bundle[color=blue]{1}{1}{2}{1}
+\bundle[color=green]{2}{1}{3}{1}
+\end{kvmap}
+
+\section*{\large Boolean expression}
+The boolean expression for \textbf{F} is
+\begin{align*}%left aligned equation
+%\begin{equation}
+%\label{eq:kmap_F}
+&F=Q^{\prime}R+PR+PQ\\
+%\end{equation}
+%	\section*{\normalsize}
+%	The above expression can be further simplified by using boolean postulate that multiplication by (Q+Q^{\prime|) to the second product term in eqn. \eqref{eq:kmap_F}\par
+%\begin{equation}
+%\label{eq:kmap_F1}
+&F=Q^{\prime}R+PR(Q+Q^{\prime})+PQ\\
+%\end{equation}
+%\begin{equation}
+%	\label{eq:kmap_F2}
+&F=Q^{\prime}R+PRQ+PRQ^{\prime}+PQ\\
+%\end{equation}
+%\begin{equation}
+%	\label{eq:kmap_F3}
+&F=Q^{\prime}R(1+P)+PQ(1+R)\\
+%\end{equation}
+%	the simplified expression for the output F is
+%\begin{equation}
+%	\label{eq:kmap_F4}
+&F=PQ+Q^{\prime}R\\
+%\end{equation}
+\end{align*}
+
+\section*{\large Software}
+Make the connections and connect the arduinoo the PC via USB.In the location of choice ,type the below commands
+\begin{enumerate}
+\item svn co https://github.com/drshyam-ou/avr-asm/trunk/assignment
+\item cd assignment
+\item avra asm\_assignment.asm
+\item pio run \-t upload
+\end{enumerate}
+\end{document}
